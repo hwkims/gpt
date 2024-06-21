@@ -39,6 +39,23 @@ document.addEventListener("DOMContentLoaded", function() {
     setScoreBoard(); //Lägger till värden i scoreboard
 
 
+
+      // Add animation to candies when moved
+  function moveCandy(candyId) {
+    const candy = document.getElementById(candyId);
+    candy.classList.add('moved');
+    setTimeout(() => {
+      candy.classList.remove('moved');
+    }, 500); // remove class after 500ms
+  }
+
+  // Add sound effects
+  const soundEffects = {
+    move: new Audio('sounds/move.wav'),
+    score: new Audio('sounds/score.wav'),
+    drop: new Audio('sounds/drop.wav')
+  };
+
     //Dragging stuff around... and... stuff.
     let colorBeingDragged;
     let colorBeingReplaced;
@@ -56,27 +73,28 @@ document.addEventListener("DOMContentLoaded", function() {
         colorBeingDragged=this.style.background;
         squareIdBeingDragged=parseInt(this.id);
     }
-    function dragEnd(){
+    function dragEnd() {
         let validMoves = [
-            squareIdBeingDragged-1,
-            squareIdBeingDragged-width,
-            squareIdBeingDragged+1,
-            squareIdBeingDragged+width
+          squareIdBeingDragged - 1,
+          squareIdBeingDragged - width,
+          squareIdBeingDragged + 1,
+          squareIdBeingDragged + width
         ];
-        let validMove=validMoves.includes(squareIdBeingReplaced);
-        if(squareIdBeingReplaced && validMove){
-            squareIdBeingReplaced=null;
-            hasMoved=true;
-        }else if(squareIdBeingReplaced && !validMove){
-            squares[squareIdBeingReplaced].style.background=colorBeingReplaced;
-            squares[squareIdBeingDragged].style.background=colorBeingDragged;
-            hasMoved=false;
-        }else{
-            squares[squareIdBeingDragged].style.background=colorBeingDragged;
-            hasMoved=false;
+        let validMove = validMoves.includes(squareIdBeingReplaced);
+        if (squareIdBeingReplaced && validMove) {
+          soundEffects.move.play();
+          hasMoved = true;
+        } else if (squareIdBeingReplaced && !validMove) {
+          soundEffects.drop.play();
+          squares[squareIdBeingReplaced].style.background = colorBeingReplaced;
+          squares[squareIdBeingDragged].style.background = colorBeingDragged;
+          hasMoved = false;
+        } else {
+          soundEffects.drop.play();
+          squares[squareIdBeingDragged].style.background = colorBeingDragged;
+          hasMoved = false;
         }
-
-    }
+      }
     function dragOver(e){
         e.preventDefault();   
     }
@@ -155,34 +173,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if(arrNoGo.includes(i)) continue; 
 
-            if(arrCase.every(index => squares[index].style.background === decidedColor && !isBlank)){
-                if(hasMoved){
-                    score += points;
-                    numMoves++;
-                    setScoreBoard();                    
+            if (arrCase.every(index => squares[index].style.background === decidedColor &&!isBlank)) {
+                if (hasMoved) {
+                  score += points;
+                  numMoves++;
+                  setScoreBoard();
+                  soundEffects.score.play();
                 }
                 arrCase.forEach(index => {
-                    squares[index].style.background = "";
+                  squares[index].style.background = "";
                 })
-            }
-        }
+              }
     }
+}
 
-    function moveDown(){
-        for(i=0;i<width;i++){
-            if(squares[i].style.background === ""){
-                let randomColor=Math.floor(Math.random() * candyColors.length);
-                squares[i].style.background=candyColors[randomColor];
-            }
-        }
-        for(i=0;i<width*width;i++){
-            if(squares[i].style.background === ""){
-                squares[i].style.background = squares[i - width].style.background;
-                squares[i - width].style.background = "";
-            }
-        }
-
+function moveDown() {
+    for (i = 0; i < width; i++) {
+      if (squares[i].style.background === "") {
+        let randomColor = Math.floor(Math.random() * candyColors.length);
+        squares[i].style.background = candyColors[randomColor];
+      }
     }
+    for (i = 0; i < width * width; i++) {
+      if (squares[i].style.background === "") {
+        let randomColor = Math.floor(Math.random() * candyColors.length);
+        squares[i].style.background = candyColors[randomColor];
+        if (squares[i].style.background !== "") {
+          soundEffects.drop.play();
+        }
+      }
+    }
+  }
 
     function setScoreBoard(){
         document.getElementById('score').innerHTML=score;
