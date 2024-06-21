@@ -64,11 +64,94 @@ document.addEventListener("DOMContentLoaded", function() {
 
     squares.forEach(square => square.addEventListener('dragstart', dragStart));
     squares.forEach(square => square.addEventListener('dragend', dragEnd));
-    squares.forEach(square => square.addEventListener('dragover',dragOver));
-    squares.forEach(square => square.addEventListener('dragenter',dragEnter));
-    squares.forEach(square => square.addEventListener('dragleave',dragLeave));
-    squares.forEach(square => square.addEventListener('drop',dragDrop));
-
+    squares.forEach(square => square.addEventListener('dragover', dragOver));
+    squares.forEach(square => square.addEventListener('dragenter', dragEnter));
+    squares.forEach(square => square.addEventListener('dragleave', dragLeave));
+    squares.forEach(square => square.addEventListener('drop', dragDrop));
+    
+    squares.forEach(square => square.addEventListener('touchstart', touchStart));
+    squares.forEach(square => square.addEventListener('touchend', touchEnd));
+    squares.forEach(square => square.addEventListener('touchmove', touchMove));
+    
+    let dragSquareId;
+    let dragColor;
+    let touchSquareId;
+    let touchColor;
+    
+    function dragStart(event) {
+      dragSquareId = parseInt(event.target.id);
+      dragColor = event.target.style.background;
+    }
+    
+    function dragEnd(event) {
+      let validMoves = [
+        dragSquareId - 1,
+        dragSquareId - width,
+        dragSquareId + 1,
+        dragSquareId + width
+      ];
+      let validMove = validMoves.includes(parseInt(event.target.id));
+      if (validMove) {
+        soundEffects.move.play();
+        hasMoved = true;
+      } else {
+        soundEffects.drop.play();
+        event.target.style.background = dragColor;
+        hasMoved = false;
+      }
+    }
+    
+    function dragOver(event) {
+      event.preventDefault();
+    }
+    
+    function dragEnter(event) {
+      event.preventDefault();
+    }
+    
+    function dragLeave(event) {
+      
+    }
+    
+    function dragDrop(event) {
+      event.preventDefault();
+      let dropSquareId = parseInt(event.target.id);
+      let dropColor = event.target.style.background;
+      event.target.style.background = dragColor;
+      squares[dragSquareId].style.background = dropColor;
+    }
+    
+    function touchStart(event) {
+      touchSquareId = parseInt(event.target.id);
+      touchColor = event.target.style.background;
+    }
+    
+    function touchEnd(event) {
+      let validMoves = [
+        touchSquareId - 1,
+        touchSquareId - width,
+        touchSquareId + 1,
+        touchSquareId + width
+      ];
+      let validMove = validMoves.includes(parseInt(event.target.id));
+      if (validMove) {
+        soundEffects.move.play();
+        hasMoved = true;
+      } else {
+        soundEffects.drop.play();
+        event.target.style.background = touchColor;
+        hasMoved = false;
+      }
+    }
+    
+    function touchMove(event) {
+      event.preventDefault();
+      let touchSquare = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+      if (touchSquare && touchSquare.id!== touchSquareId) {
+        touchSquare.style.background = touchColor;
+        squares[touchSquareId].style.background = touchSquare.style.background;
+      }
+    }
     function dragStart(){
         colorBeingDragged=this.style.background;
         squareIdBeingDragged=parseInt(this.id);
