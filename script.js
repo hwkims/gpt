@@ -125,22 +125,22 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function touchEnd(event) {
-      let validMoves = [
-        touchSquareId - 1,
-        touchSquareId - width,
-        touchSquareId + 1,
-        touchSquareId + width
-      ];
-      let validMove = validMoves.includes(parseInt(event.target.id));
-      if (validMove) {
-        soundEffects.move.play();
-        hasMoved = true;
-      } else {
-        soundEffects.drop.play();
-        event.target.style.background = touchColor;
-        hasMoved = false;
+        let validMoves = [
+          touchSquareId - 1,
+          touchSquareId - width,
+          touchSquareId + 1,
+          touchSquareId + width
+        ];
+        let validMove = validMoves.includes(parseInt(event.target.id));
+        if (validMove) {
+          soundEffects.move.play();
+          hasMoved = true; // Set hasMoved to true here
+        } else {
+          soundEffects.drop.play();
+          event.target.style.background = touchColor;
+          hasMoved = false;
+        }
       }
-    }
     
     function touchMove(event) {
       event.preventDefault();
