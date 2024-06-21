@@ -7,14 +7,14 @@ document.addEventListener("DOMContentLoaded", function() {
     let hasMoved=false;
 
     const candyColors = [
-        "radial-gradient(circle at 65% 15%, #fff 1px, #FFA07A 3%, #FF9900 60%, #FFA07A 100%)", // Warm Orange
-        "radial-gradient(circle at 65% 15%, #fff 1px, #4CAF50 3%, #3E8E41 60%, #4CAF50 100%)", // Fresh Green
-        "radial-gradient(circle at 65% 15%, #fff 1px, #2196F3 3%, #1A73E8 60%, #2196F3 100%)", // Sky Blue
-        "radial-gradient(circle at 65% 15%, #fff 1px, #9C27B0 3%, #7B1FA2 60%, #9C27B0 100%)", // Deep Purple
+        "radial-gradient(circle at 65% 15%, #fff 1px, #FFC499 3%, #FFA07A 60%, #FF9900 100%)", // Warm Orange
+        "radial-gradient(circle at 65% 15%, #fff 1px, #34C759 3%, #3E8E41 60%, #2E865F 100%)", // Fresh Green
+        "radial-gradient(circle at 65% 15%, #fff 1px, #87CEEB 3%, #1A73E8 60%, #2196F3 100%)", // Sky Blue
+        "radial-gradient(circle at 65% 15%, #fff 1px, #B388FF 3%, #7B1FA2 60%, #9C27B0 100%)", // Deep Purple
       ];
       
       const specialColors = [
-        "radial-gradient(circle at 65% 15%, #fff 1px, #444 3%, #555 60%, #444 100%)"
+        "radial-gradient(circle at 65% 15%, #fff 1px, #666 3%, #444 60%, #333 100%)"
       ];
 
     function createBoard(){
