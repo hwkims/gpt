@@ -341,18 +341,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     //  X   X
                     //    X
                     break;
-                case "fourleftdiagonal":
-                    //  X
-                    //    X
-                    //      X
-                    //        X
-                    break;
-                case "fourrightdiagonal":
-                    //        X
-                    //      X
-                    //    X
-                    //  X
-                    break;    
+                    case "fourleftdiagonal":
+        arrCase = [i, i + width - 1, i + width * 2 - 2, i + width * 3 - 3];
+        break;
+      case "fourrightdiagonal":
+        arrCase = [i, i + width + 1, i + width * 2 + 2, i + width * 3 + 3];
+        break;   
                 default:
             }
 
