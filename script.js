@@ -6,16 +6,18 @@ document.addEventListener("DOMContentLoaded", function() {
     let numMoves=0;
     let hasMoved=false;
 
-    const candyColors = [
-        "radial-gradient(circle at 65% 15%, #fff 1px, #FFC499 3%, #FFA07A 60%, #FF9900 100%)", // Warm Orange
-        "radial-gradient(circle at 65% 15%, #fff 1px, #34C759 3%, #3E8E41 60%, #2E865F 100%)", // Fresh Green
-        "radial-gradient(circle at 65% 15%, #fff 1px, #87CEEB 3%, #1A73E8 60%, #2196F3 100%)", // Sky Blue
-        "radial-gradient(circle at 65% 15%, #fff 1px, #B388FF 3%, #7B1FA2 60%, #9C27B0 100%)", // Deep Purple
-      ];
-      
-      const specialColors = [
-        "radial-gradient(circle at 65% 15%, #fff 1px, #666 3%, #444 60%, #333 100%)"
-      ];
+    const candyColors=[
+        "radial-gradient(circle at 65% 15%, white 1px, red 3%, darkred 60%, red 100%)", 
+        "radial-gradient(circle at 65% 15%, white 1px, gold 3%, orange 60%, gold 100%)", 
+        "radial-gradient(circle at 65% 15%, white 1px, orange 3%, orangered 60%, orange 100%)", 
+        "radial-gradient(circle at 65% 15%, white 1px, orchid 3%, purple 60%, orchid 100%)",
+        "radial-gradient(circle at 65% 15%, white 1px, lime 3%, green 60%, lime 100%)",
+        "radial-gradient(circle at 65% 15%, white 1px, aqua 3%, darkblue 60%, aqua 100%)"//,
+        //"radial-gradient(circle at 65% 15%, white 1px, lightgrey 3%, darkgrey 60%, lightgrey 100%)"
+    ]
+    const specialColors=[
+        "radial-gradient(circle at 65% 15%, white 1px, lightgrey 3%, darkgrey 60%, lightgrey 100%)"
+    ]
 
     function createBoard(){
         for(i=0; i<(width*width); i++){
@@ -37,23 +39,6 @@ document.addEventListener("DOMContentLoaded", function() {
     setScoreBoard(); //Lägger till värden i scoreboard
 
 
-
-      // Add animation to candies when moved
-  function moveCandy(candyId) {
-    const candy = document.getElementById(candyId);
-    candy.classList.add('moved');
-    setTimeout(() => {
-      candy.classList.remove('moved');
-    }, 500); // remove class after 500ms
-  }
-
-  // Add sound effects
-  const soundEffects = {
-    move: new Audio('sounds/move.wav'),
-    score: new Audio('sounds/score.wav'),
-    drop: new Audio('sounds/drop.wav')
-  };
-
     //Dragging stuff around... and... stuff.
     let colorBeingDragged;
     let colorBeingReplaced;
@@ -62,120 +47,36 @@ document.addEventListener("DOMContentLoaded", function() {
 
     squares.forEach(square => square.addEventListener('dragstart', dragStart));
     squares.forEach(square => square.addEventListener('dragend', dragEnd));
-    squares.forEach(square => square.addEventListener('dragover', dragOver));
-    squares.forEach(square => square.addEventListener('dragenter', dragEnter));
-    squares.forEach(square => square.addEventListener('dragleave', dragLeave));
-    squares.forEach(square => square.addEventListener('drop', dragDrop));
-    
-    squares.forEach(square => square.addEventListener('touchstart', touchStart));
-    squares.forEach(square => square.addEventListener('touchend', touchEnd));
-    squares.forEach(square => square.addEventListener('touchmove', touchMove));
-    
-    let dragSquareId;
-    let dragColor;
-    let touchSquareId;
-    let touchColor;
-    
-    function dragStart(event) {
-      dragSquareId = parseInt(event.target.id);
-      dragColor = event.target.style.background;
-    }
-    
-    function dragEnd(event) {
-      let validMoves = [
-        dragSquareId - 1,
-        dragSquareId - width,
-        dragSquareId + 1,
-        dragSquareId + width
-      ];
-      let validMove = validMoves.includes(parseInt(event.target.id));
-      if (validMove) {
-        soundEffects.move.play();
-        hasMoved = true;
-      } else {
-        soundEffects.drop.play();
-        event.target.style.background = dragColor;
-        hasMoved = false;
-      }
-    }
-    
-    function dragOver(event) {
-      event.preventDefault();
-    }
-    
-    function dragEnter(event) {
-      event.preventDefault();
-    }
-    
-    function dragLeave(event) {
-      
-    }
-    
-    function dragDrop(event) {
-      event.preventDefault();
-      let dropSquareId = parseInt(event.target.id);
-      let dropColor = event.target.style.background;
-      event.target.style.background = dragColor;
-      squares[dragSquareId].style.background = dropColor;
-    }
-    
-    function touchStart(event) {
-      touchSquareId = parseInt(event.target.id);
-      touchColor = event.target.style.background;
-    }
-    
-    function touchEnd(event) {
-        let validMoves = [
-          touchSquareId - 1,
-          touchSquareId - width,
-          touchSquareId + 1,
-          touchSquareId + width
-        ];
-        let validMove = validMoves.includes(parseInt(event.target.id));
-        if (validMove) {
-          soundEffects.move.play();
-          hasMoved = true; // Set hasMoved to true here
-        } else {
-          soundEffects.drop.play();
-          event.target.style.background = touchColor;
-          hasMoved = false;
-        }
-      }
-    
-    function touchMove(event) {
-      event.preventDefault();
-      let touchSquare = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
-      if (touchSquare && touchSquare.id!== touchSquareId) {
-        touchSquare.style.background = touchColor;
-        squares[touchSquareId].style.background = touchSquare.style.background;
-      }
-    }
+    squares.forEach(square => square.addEventListener('dragover',dragOver));
+    squares.forEach(square => square.addEventListener('dragenter',dragEnter));
+    squares.forEach(square => square.addEventListener('dragleave',dragLeave));
+    squares.forEach(square => square.addEventListener('drop',dragDrop));
+
     function dragStart(){
         colorBeingDragged=this.style.background;
         squareIdBeingDragged=parseInt(this.id);
     }
-    function dragEnd() {
+    function dragEnd(){
         let validMoves = [
-          squareIdBeingDragged - 1,
-          squareIdBeingDragged - width,
-          squareIdBeingDragged + 1,
-          squareIdBeingDragged + width
+            squareIdBeingDragged-1,
+            squareIdBeingDragged-width,
+            squareIdBeingDragged+1,
+            squareIdBeingDragged+width
         ];
-        let validMove = validMoves.includes(squareIdBeingReplaced);
-        if (squareIdBeingReplaced && validMove) {
-          soundEffects.move.play();
-          hasMoved = true;
-        } else if (squareIdBeingReplaced && !validMove) {
-          soundEffects.drop.play();
-          squares[squareIdBeingReplaced].style.background = colorBeingReplaced;
-          squares[squareIdBeingDragged].style.background = colorBeingDragged;
-          hasMoved = false;
-        } else {
-          soundEffects.drop.play();
-          squares[squareIdBeingDragged].style.background = colorBeingDragged;
-          hasMoved = false;
+        let validMove=validMoves.includes(squareIdBeingReplaced);
+        if(squareIdBeingReplaced && validMove){
+            squareIdBeingReplaced=null;
+            hasMoved=true;
+        }else if(squareIdBeingReplaced && !validMove){
+            squares[squareIdBeingReplaced].style.background=colorBeingReplaced;
+            squares[squareIdBeingDragged].style.background=colorBeingDragged;
+            hasMoved=false;
+        }else{
+            squares[squareIdBeingDragged].style.background=colorBeingDragged;
+            hasMoved=false;
         }
-      }
+
+    }
     function dragOver(e){
         e.preventDefault();   
     }
@@ -254,37 +155,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if(arrNoGo.includes(i)) continue; 
 
-            if (arrCase.every(index => squares[index].style.background === decidedColor &&!isBlank)) {
-                if (hasMoved) {
-                  score += points;
-                  numMoves++;
-                  setScoreBoard();
-                  soundEffects.score.play();
+            if(arrCase.every(index => squares[index].style.background === decidedColor && !isBlank)){
+                if(hasMoved){
+                    score += points;
+                    numMoves++;
+                    setScoreBoard();                    
                 }
                 arrCase.forEach(index => {
-                  squares[index].style.background = "";
+                    squares[index].style.background = "";
                 })
-              }
-    }
-}
-
-function moveDown() {
-    for (i = 0; i < width; i++) {
-      if (squares[i].style.background === "") {
-        let randomColor = Math.floor(Math.random() * candyColors.length);
-        squares[i].style.background = candyColors[randomColor];
-      }
-    }
-    for (i = 0; i < width * width; i++) {
-      if (squares[i].style.background === "") {
-        let randomColor = Math.floor(Math.random() * candyColors.length);
-        squares[i].style.background = candyColors[randomColor];
-        if (squares[i].style.background !== "") {
-          soundEffects.drop.play();
+            }
         }
-      }
     }
-  }
+
+    function moveDown(){
+        for(i=0;i<width;i++){
+            if(squares[i].style.background === ""){
+                let randomColor=Math.floor(Math.random() * candyColors.length);
+                squares[i].style.background=candyColors[randomColor];
+            }
+        }
+        for(i=0;i<width*width;i++){
+            if(squares[i].style.background === ""){
+                squares[i].style.background = squares[i - width].style.background;
+                squares[i - width].style.background = "";
+            }
+        }
+
+    }
 
     function setScoreBoard(){
         document.getElementById('score').innerHTML=score;

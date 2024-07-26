@@ -1,0 +1,93 @@
+* {
+    transition: 1s;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(0deg, black, grey);
+    background-size: cover;
+    overflow: hidden;
+  }
+  
+  .inset {
+    box-shadow: 0 2px 4px rgb(0, 0, 0, 0.5) inset, 0 1px 0 #fff;
+  }
+  
+  .scoreboard {
+    display: flex;
+    justify-content: space-between;
+    width: 560px;
+    padding: 5px;
+    background: rgb(100, 100, 100, 0.5);
+    border-radius: 10px;
+    margin-bottom: 5px;
+    color: #fff;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    color: white;
+    padding-inline: 3rem;
+  }
+  
+  h1:first-child {
+    align-self: flex-start;
+    text-align: left;
+  }
+  
+  h1:last-child {
+    align-self: flex-end;
+    text-align: right;
+  }
+  
+  .grid {
+    width: calc(560px*1);
+    width: calc(560px*1);
+    display: flex;
+    flex-wrap: wrap;
+    background: rgb(100, 100, 100, 0.5);
+    padding: 5px;
+    border-radius: 10px;
+    transition: all 0.1s ease-in-out;
+  }
+  
+  .grid div {
+    height: calc(68px*1);
+    width: calc(68px*1);
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 1px;
+    transition: all 0.1s ease-in-out;
+  }
+  
+  .cen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Add animation to candies when moved */
+  .grid div.moved {
+    animation: move-candy 0.5s ease-in-out;
+  }
+  
+  @keyframes move-candy {
+    0% {
+      transform: translateX(0) translateY(0);
+    }
+    50% {
+      transform: translateX(10px) translateY(10px);
+    }
+    100% {
+      transform: translateX(0) translateY(0);
+    }
+  }
